@@ -1,0 +1,64 @@
+name: "Compile & Upload"
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  id-token: write
+  contents: read
+  attestations: write
+
+jobs:
+  build-linux:
+    name: Build (Linux 🐧)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '^1.24.4'
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+      - name: Build project
+        run: |
+          GOARCH=amd64 go build -o rot-tracker-webhook-linux/
+          mv rot-tracker-webhook-linux/rot-tracker-webhook rot-tracker-webhook-linux/rot-tracker-webhook.x86_64
+          chmod +x rot-tracker-webhook-linux/rot-tracker-webhook.x86_64
+          mv webhook.txt rot-tracker-webhook-linux/webhook.txt
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: rot-tracker-webhook-linux
+          path: rot-tracker-webhook-linux/
+      - name: Generate artifact attestation
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: rot-tracker-webhook-linux/
+  build-windows:
+    name: Build (Windows 🪟)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '^1.24.4'
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+      - name: Build project
+        run: |
+          $Env:GOARCH="amd64"
+          go build -o rot-tracker-webhook-windows/
+          mv webhook.txt rot-tracker-webhook-windows/webhook.txt
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: rot-tracker-webhook-windows
+          path: rot-tracker-webhook-windows/
+      - name: Generate artifact attestation
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: rot-tracker-webhook-windows/
