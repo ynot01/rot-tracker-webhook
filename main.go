@@ -60,6 +60,7 @@ func main() {
 				defer client.Close()
 				continue
 			}
+			// Servers are stored by server port, not query port!
 			oldServerName, serverIsRegistered := registeredServers[official_servers[official]]
 			if serverIsRegistered && oldServerName != info.Name { // If the name changed, report it to Discord
 				send_message_to_discord(fmt.Sprintf("%v %v just rotted! New name: %v", official_servers[official], oldServerName, info.Name))
