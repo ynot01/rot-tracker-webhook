@@ -28,6 +28,10 @@ func main() {
 		return
 	}
 	myWebhookURL = strings.TrimSpace(string(content))
+	if myWebhookURL == "Replace this text with your Discord webhook URL" || myWebhookURL == "" {
+		fmt.Printf("[%v] Webhook not set! Please set webhook.txt\n", time.Now().Format(time.RFC850))
+		return
+	}
 	for range time.Tick(time.Second * 10) { // Wait a healthy 10 seconds
 		official_servers := get_masterlist()
 		for official := range official_servers {
