@@ -17,6 +17,7 @@ const WEBHOOK_USERNAME = "RotTracker"
 const WEBHOOK_AVATAR_URL = "https://cdn.fastly.steamstatic.com/steamcommunity/public/images/apps/2773280/b1eeb415c1b44677b667de93549594d313e78a8b.jpg"
 const MASTER_URL = "https://content.aneurismiv.com/masterlist"
 
+var udpClients map[string]*a2s.Client = make(map[string]*a2s.Client)
 var registeredServers map[string]string = make(map[string]string)
 var myWebhookURL string
 
@@ -58,13 +59,17 @@ func main() {
 			} else {
 				ipAddr = fmt.Sprintf("%v:%v", ipAddr[:findPort], portInt+1) // Add 1 to server port to get the a2s query port
 			}
-			client, newClientErr := a2s.NewClient(
-				ipAddr,
-				a2s.SetAppID(2773280),
-			)
-			if newClientErr != nil {
-				fmt.Printf("[%v] newClientErr: %v\n", time.Now().Format(time.RFC850), newClientErr)
-				continue
+			client, weHaveClient := udpClients[ipAddr]
+			if !weHaveClient {
+				newClient, newClientErr := a2s.NewClient(
+					ipAddr,
+					a2s.SetAppID(2773280),
+				)
+				if newClientErr != nil {
+					fmt.Printf("[%v] newClientErr: %v\n", time.Now().Format(time.RFC850), newClientErr)
+					continue
+				}
+				client = newClient
 			}
 			info, infoErr := client.QueryInfo()
 			if infoErr != nil {
