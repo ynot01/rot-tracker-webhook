@@ -71,14 +71,13 @@ jobs:
             rot-tracker-webhook-linux-arm64/
             rot-tracker-webhook-linux-arm32/
       - name: Publish artifacts to GitHub release
-        uses: softprops/action-gh-release@v2
-        if: github.ref_type == 'tag'
-        with:
-          files: |
-            rot-tracker-webhook-linux-amd64/
-            rot-tracker-webhook-linux-i386/
-            rot-tracker-webhook-linux-arm64/
-            rot-tracker-webhook-linux-arm32/
+        run: |
+          gh release upload ${{ github.event.release.tag_name }} rot-tracker-webhook-linux-amd64/
+          gh release upload ${{ github.event.release.tag_name }} rot-tracker-webhook-linux-i386/
+          gh release upload ${{ github.event.release.tag_name }} rot-tracker-webhook-linux-arm64/
+          gh release upload ${{ github.event.release.tag_name }} rot-tracker-webhook-linux-arm32/
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   build-windows:
     name: Build (Windows 🪟)
     runs-on: windows-latest
@@ -133,11 +132,10 @@ jobs:
             rot-tracker-webhook-windows-arm64/
             rot-tracker-webhook-windows-arm32/
       - name: Publish artifacts to GitHub release
-        uses: softprops/action-gh-release@v2
-        if: github.ref_type == 'tag'
-        with:
-          files: |
-            rot-tracker-webhook-windows-amd64/
-            rot-tracker-webhook-windows-i386/
-            rot-tracker-webhook-windows-arm64/
-            rot-tracker-webhook-windows-arm32/
+        run: |
+          gh release upload ${{ github.event.release.tag_name }} rot-tracker-webhook-windows-amd64/
+          gh release upload ${{ github.event.release.tag_name }} rot-tracker-webhook-windows-i386/
+          gh release upload ${{ github.event.release.tag_name }} rot-tracker-webhook-windows-arm64/
+          gh release upload ${{ github.event.release.tag_name }} rot-tracker-webhook-windows-arm32/
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
