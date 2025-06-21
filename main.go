@@ -75,7 +75,6 @@ func main() {
 			if infoErr != nil {
 				// Don't print on server connection errors- a few of them are down a lot
 				// fmt.Printf("%v \"fail\"\n", ipAddr)
-				defer client.Close()
 				continue
 			} else {
 				// fmt.Printf("%v \"success\"\n", ipAddr)
@@ -87,7 +86,6 @@ func main() {
 				send_message_to_discord(dictKey, region, oldServerName, info.Name)
 			}
 			registeredServers[dictKey] = info.Name
-			defer client.Close()
 		}
 	}
 }
