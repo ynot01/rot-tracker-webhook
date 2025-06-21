@@ -79,7 +79,7 @@ func main() {
 			// Servers are stored by server port, not query port!
 			oldServerName, serverIsRegistered := registeredServers[dictKey]
 			if serverIsRegistered && oldServerName != info.Name { // If the name changed, report it to Discord
-				send_message_to_discord(fmt.Sprintf("%v (%v) %v just rotted! New name: %v", dictKey, region, oldServerName, info.Name))
+				send_message_to_discord(dictKey, region, oldServerName, info.Name)
 			}
 			registeredServers[dictKey] = info.Name
 			defer client.Close()
@@ -101,12 +101,35 @@ func get_masterlist() []string {
 	return strings.Split(string(resBody), "\n")
 }
 
-func send_message_to_discord(msg string) {
+func send_message_to_discord(ipAddr string, region string, oldServerName string, newServerName string) {
 	jsonBody := fmt.Appendf(nil, `{
-		"avatar_url": "%v",
-		"username": "%v",
-		"content": "%v"
-	}`, WEBHOOK_AVATAR_URL, WEBHOOK_USERNAME, msg)
+  "embeds": [
+    {
+      "title": "An official server has been consumed by the rot!",
+      "color": 16749144,
+      "fields": [
+        {
+          "name": "Region",
+          "value": "%v"
+        },
+        {
+          "name": "Old name",
+          "value": "%v"
+        },
+        {
+          "name": "New name",
+          "value": "%v"
+        }
+      ],
+      "footer": {
+        "text": "IP Address: %v"
+      }
+    }
+  ],
+  "components": [],
+  "username": "%v",
+  "avatar_url": "%v"
+}`, region, oldServerName, newServerName, ipAddr, WEBHOOK_USERNAME, WEBHOOK_AVATAR_URL)
 	bodyReader := bytes.NewReader(jsonBody)
 	resp, err := http.Post(myWebhookURL, "application/json", bodyReader)
 	if err != nil {
