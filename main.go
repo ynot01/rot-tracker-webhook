@@ -40,6 +40,7 @@ func main() {
 			if findComment != -1 {
 				ipAddr = strings.TrimSpace(ipAddr[:findComment])
 			}
+			dictKey := ipAddr
 			findPort := strings.Index(ipAddr, ":") // Isolate :port (and ignore entries without a port)
 			var ipPort string
 			if findPort == -1 {
@@ -76,11 +77,11 @@ func main() {
 			}
 			region := strings.ToUpper(get_region_from_keywords(info.ExtendedServerInfo.Keywords))
 			// Servers are stored by server port, not query port!
-			oldServerName, serverIsRegistered := registeredServers[official_servers[official]]
+			oldServerName, serverIsRegistered := registeredServers[dictKey]
 			if serverIsRegistered && oldServerName != info.Name { // If the name changed, report it to Discord
-				send_message_to_discord(fmt.Sprintf("%v (%v) %v just rotted! New name: %v", official_servers[official], region, oldServerName, info.Name))
+				send_message_to_discord(fmt.Sprintf("%v (%v) %v just rotted! New name: %v", dictKey, region, oldServerName, info.Name))
 			}
-			registeredServers[official_servers[official]] = info.Name
+			registeredServers[dictKey] = info.Name
 			defer client.Close()
 		}
 	}
