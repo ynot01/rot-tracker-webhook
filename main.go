@@ -74,10 +74,11 @@ func main() {
 			} else {
 				// fmt.Printf("%v \"success\"\n", ipAddr)
 			}
+			region := strings.ToUpper(get_region_from_keywords(info.ExtendedServerInfo.Keywords))
 			// Servers are stored by server port, not query port!
 			oldServerName, serverIsRegistered := registeredServers[official_servers[official]]
 			if serverIsRegistered && oldServerName != info.Name { // If the name changed, report it to Discord
-				send_message_to_discord(fmt.Sprintf("%v %v just rotted! New name: %v", official_servers[official], oldServerName, info.Name))
+				send_message_to_discord(fmt.Sprintf("%v (%v) %v just rotted! New name: %v", official_servers[official], region, oldServerName, info.Name))
 			}
 			registeredServers[official_servers[official]] = info.Name
 			defer client.Close()
@@ -115,4 +116,18 @@ func send_message_to_discord(msg string) {
 		fmt.Printf("[%v] resp.StatusCode: %v\n", time.Now().Format(time.RFC850), resp.StatusCode)
 		return
 	}
+}
+
+func get_region_from_keywords(keywords string) string {
+	returnValue := "Unknown Region"
+	keywordStrings := strings.Split(strings.TrimSpace(keywords), ",")
+	for n := range keywordStrings {
+		keyAndValue := strings.Split(keywordStrings[n], ":")
+		key := keyAndValue[0]
+		value := keyAndValue[1]
+		if key == "region" {
+			returnValue = value
+		}
+	}
+	return returnValue
 }
