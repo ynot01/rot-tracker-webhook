@@ -17,6 +17,8 @@ Replace the text in webhook.txt with your webhook URL
 
 Operational abnormalities will be reported to STDOUT, but the program will continue running if it can
 
+Tip: Running `./rot-tracker-webhook.x86_64 > ./rot.log 2>&1 &` on **Linux** will run the program as a background process and output logs to ./rot.log
+
 ## Building
 
 Built with [Go 1.24.4](https://go.dev/), it will likely work with later versions
