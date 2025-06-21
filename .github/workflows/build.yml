@@ -15,13 +15,13 @@ jobs:
     name: Build (Linux 🐧)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-go@v5
-        with:
-          go-version: '^1.24.4'
       - name: Checkout
         uses: actions/checkout@v4
         with:
           lfs: true
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '^1.24.4'
       - name: Build project
         run: |
           GOARCH=amd64 go build -o rot-tracker-webhook-linux/
@@ -41,13 +41,13 @@ jobs:
     name: Build (Windows 🪟)
     runs-on: windows-latest
     steps:
-      - uses: actions/setup-go@v5
-        with:
-          go-version: '^1.24.4'
       - name: Checkout
         uses: actions/checkout@v4
         with:
           lfs: true
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '^1.24.4'
       - name: Build project
         run: |
           $Env:GOARCH="amd64"
