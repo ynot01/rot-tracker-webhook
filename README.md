@@ -1,5 +1,7 @@
 # ANEURISM IV Rot Tracker Webhook
 
+![image](https://github.com/user-attachments/assets/23e2188a-5e99-491d-8476-0ffe39446026)
+
 This is a webhook app designed for Discord that posts when official servers reset via rot.
 
 It does this by querying each official server with Steam a2s queries, storing their names, and reporting when the names change.
