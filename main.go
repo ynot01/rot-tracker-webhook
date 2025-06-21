@@ -70,6 +70,7 @@ func main() {
 					continue
 				}
 				client = newClient
+				udpClients[ipAddr] = newClient
 			}
 			info, infoErr := client.QueryInfo()
 			if infoErr != nil {
