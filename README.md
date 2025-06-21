@@ -8,7 +8,10 @@ It does this by querying each official server with Steam a2s queries, storing th
 
 ## Usage
 
-Head to releases on the right for the latest working build
+|         | AMD64    | i386     | ARM64    | ARM32    |
+| :---:   | :---:    | :---:    | :---:    | :---:    |
+| Windows | [✅](https://github.com/ynot01/rot-tracker-webhook/releases/latest/download/rot-tracker-webhook-windows-amd64.zip) | [✅](https://github.com/ynot01/rot-tracker-webhook/releases/latest/download/rot-tracker-webhook-windows-i386.zip) | [✅](https://github.com/ynot01/rot-tracker-webhook/releases/latest/download/rot-tracker-webhook-windows-arm64.zip) | [✅](https://github.com/ynot01/rot-tracker-webhook/releases/latest/download/rot-tracker-webhook-windows-arm32.zip) |
+| Linux   | [✅](https://github.com/ynot01/rot-tracker-webhook/releases/latest/download/rot-tracker-webhook-linux-amd64.zip) | [✅](https://github.com/ynot01/rot-tracker-webhook/releases/latest/download/rot-tracker-webhook-linux-i386.zip) | [✅](https://github.com/ynot01/rot-tracker-webhook/releases/latest/download/rot-tracker-webhook-linux-arm64.zip) | [✅](https://github.com/ynot01/rot-tracker-webhook/releases/latest/download/rot-tracker-webhook-linux-arm32.zip) |
 
 Replace the text in webhook.txt with your webhook URL
 
