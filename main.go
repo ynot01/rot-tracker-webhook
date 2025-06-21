@@ -21,9 +21,10 @@ var registeredServers map[string]string = make(map[string]string)
 var myWebhookURL string
 
 func main() {
+	fmt.Printf("[%v] Started rot-tracker-webhook.\n", time.Now().Format(time.RFC850))
 	content, fileErr := os.ReadFile("webhook.txt")
 	if fileErr != nil {
-		fmt.Printf("fileErr: %v\n", fileErr)
+		fmt.Printf("[%v] fileErr: %v\n", time.Now().Format(time.RFC850), fileErr)
 		return
 	}
 	myWebhookURL = strings.TrimSpace(string(content))
@@ -44,7 +45,7 @@ func main() {
 			}
 			portInt, atoiErr := strconv.Atoi(ipPort)
 			if atoiErr != nil {
-				fmt.Printf("atoiErr: %v\n", atoiErr)
+				fmt.Printf("[%v] atoiErr: %v\n", time.Now().Format(time.RFC850), atoiErr)
 				continue
 			}
 			if findPort == -1 {
@@ -57,7 +58,7 @@ func main() {
 				a2s.SetAppID(2773280),
 			)
 			if newClientErr != nil {
-				fmt.Printf("newClientErr: %v\n", newClientErr)
+				fmt.Printf("[%v] newClientErr: %v\n", time.Now().Format(time.RFC850), newClientErr)
 				continue
 			}
 			info, infoErr := client.QueryInfo()
@@ -83,12 +84,12 @@ func main() {
 func get_masterlist() []string {
 	resp, masterErr := http.Get(MASTER_URL)
 	if masterErr != nil {
-		fmt.Printf("masterErr: %v\n", masterErr)
+		fmt.Printf("[%v] masterErr: %v\n", time.Now().Format(time.RFC850), masterErr)
 		return []string{}
 	}
 	resBody, ioErr := io.ReadAll(resp.Body)
 	if ioErr != nil {
-		fmt.Printf("ioErr: %v\n", ioErr)
+		fmt.Printf("[%v] ioErr: %v\n", time.Now().Format(time.RFC850), ioErr)
 		return []string{}
 	}
 	return strings.Split(string(resBody), "\n")
@@ -103,11 +104,11 @@ func send_message_to_discord(msg string) {
 	bodyReader := bytes.NewReader(jsonBody)
 	resp, err := http.Post(myWebhookURL, "application/json", bodyReader)
 	if err != nil {
-		fmt.Printf("err: %v\n", err)
+		fmt.Printf("[%v] err: %v\n", time.Now().Format(time.RFC850), err)
 		return
 	}
 	if resp.StatusCode > 299 {
-		fmt.Printf("resp.StatusCode: %v\n", resp.StatusCode)
+		fmt.Printf("[%v] resp.StatusCode: %v\n", time.Now().Format(time.RFC850), resp.StatusCode)
 		return
 	}
 }
