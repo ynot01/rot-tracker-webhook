@@ -73,9 +73,8 @@ func main() {
 			oldServerName, serverIsRegistered := registeredServers[official_servers[official]]
 			if serverIsRegistered && oldServerName != info.Name { // If the name changed, report it to Discord
 				send_message_to_discord(fmt.Sprintf("%v %v just rotted! New name: %v", official_servers[official], oldServerName, info.Name))
-			} else {
-				registeredServers[official_servers[official]] = info.Name
 			}
+			registeredServers[official_servers[official]] = info.Name
 			defer client.Close()
 		}
 	}
