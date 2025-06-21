@@ -73,10 +73,14 @@ jobs:
       - name: Publish artifacts to GitHub release
         if: github.ref_type == 'tag'
         run: |
-          gh release upload ${{ github.event.release.tag_name }} rot-tracker-webhook-linux-amd64/
-          gh release upload ${{ github.event.release.tag_name }} rot-tracker-webhook-linux-i386/
-          gh release upload ${{ github.event.release.tag_name }} rot-tracker-webhook-linux-arm64/
-          gh release upload ${{ github.event.release.tag_name }} rot-tracker-webhook-linux-arm32/
+          7z a rot-tracker-webhook-linux-amd64.zip ./rot-tracker-webhook-linux-amd64/
+          7z a rot-tracker-webhook-linux-i386.zip ./rot-tracker-webhook-linux-i386/
+          7z a rot-tracker-webhook-linux-arm64.zip ./rot-tracker-webhook-linux-arm64/
+          7z a rot-tracker-webhook-linux-arm32.zip ./rot-tracker-webhook-linux-arm32/
+          gh release upload ${{ github.event.release.tag_name }} rot-tracker-webhook-linux-amd64.zip
+          gh release upload ${{ github.event.release.tag_name }} rot-tracker-webhook-linux-i386.zip
+          gh release upload ${{ github.event.release.tag_name }} rot-tracker-webhook-linux-arm64.zip
+          gh release upload ${{ github.event.release.tag_name }} rot-tracker-webhook-linux-arm32.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   build-windows:
@@ -135,9 +139,13 @@ jobs:
       - name: Publish artifacts to GitHub release
         if: github.ref_type == 'tag'
         run: |
-          gh release upload ${{ github.event.release.tag_name }} rot-tracker-webhook-windows-amd64/
-          gh release upload ${{ github.event.release.tag_name }} rot-tracker-webhook-windows-i386/
-          gh release upload ${{ github.event.release.tag_name }} rot-tracker-webhook-windows-arm64/
-          gh release upload ${{ github.event.release.tag_name }} rot-tracker-webhook-windows-arm32/
+          7z a rot-tracker-webhook-windows-amd64.zip ./rot-tracker-webhook-windows-amd64/
+          7z a rot-tracker-webhook-windows-i386.zip ./rot-tracker-webhook-windows-i386/
+          7z a rot-tracker-webhook-windows-arm64.zip ./rot-tracker-webhook-windows-arm64/
+          7z a rot-tracker-webhook-windows-arm32.zip ./rot-tracker-webhook-windows-arm32/
+          gh release upload ${{ github.event.release.tag_name }} rot-tracker-webhook-windows-amd64.zip
+          gh release upload ${{ github.event.release.tag_name }} rot-tracker-webhook-windows-i386.zip
+          gh release upload ${{ github.event.release.tag_name }} rot-tracker-webhook-windows-arm64.zip
+          gh release upload ${{ github.event.release.tag_name }} rot-tracker-webhook-windows-arm32.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
