@@ -36,16 +36,22 @@ func main() {
 				ipAddr = strings.TrimSpace(ipAddr[:findComment])
 			}
 			findPort := strings.Index(ipAddr, ":") // Isolate :port (and ignore entries without a port)
+			var ipPort string
 			if findPort == -1 {
-				continue
+				ipPort = "7777"
+			} else {
+				ipPort = strings.TrimSpace(ipAddr[findPort:])[1:]
 			}
-			ipPort := strings.TrimSpace(ipAddr[findPort:])[1:] // Add 1 to server port to get the a2s query port
 			portInt, atoiErr := strconv.Atoi(ipPort)
 			if atoiErr != nil {
 				fmt.Printf("atoiErr: %v\n", atoiErr)
 				continue
 			}
-			ipAddr = fmt.Sprintf("%v:%v", ipAddr[:findPort], portInt+1)
+			if findPort == -1 {
+				ipAddr = fmt.Sprintf("%v:%v", ipAddr, portInt+1)
+			} else {
+				ipAddr = fmt.Sprintf("%v:%v", ipAddr[:findPort], portInt+1) // Add 1 to server port to get the a2s query port
+			}
 			client, newClientErr := a2s.NewClient(
 				ipAddr,
 				a2s.SetAppID(2773280),
@@ -57,8 +63,11 @@ func main() {
 			info, infoErr := client.QueryInfo()
 			if infoErr != nil {
 				// Don't print on server connection errors- a few of them are down a lot
+				// fmt.Printf("%v \"fail\"\n", ipAddr)
 				defer client.Close()
 				continue
+			} else {
+				// fmt.Printf("%v \"success\"\n", ipAddr)
 			}
 			// Servers are stored by server port, not query port!
 			oldServerName, serverIsRegistered := registeredServers[official_servers[official]]
