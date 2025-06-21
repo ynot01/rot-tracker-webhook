@@ -71,6 +71,7 @@ jobs:
             rot-tracker-webhook-linux-arm64/
             rot-tracker-webhook-linux-arm32/
       - name: Publish artifacts to GitHub release
+        if: github.ref_type == 'tag'
         run: |
           gh release upload ${{ github.event.release.tag_name }} rot-tracker-webhook-linux-amd64/
           gh release upload ${{ github.event.release.tag_name }} rot-tracker-webhook-linux-i386/
@@ -132,6 +133,7 @@ jobs:
             rot-tracker-webhook-windows-arm64/
             rot-tracker-webhook-windows-arm32/
       - name: Publish artifacts to GitHub release
+        if: github.ref_type == 'tag'
         run: |
           gh release upload ${{ github.event.release.tag_name }} rot-tracker-webhook-windows-amd64/
           gh release upload ${{ github.event.release.tag_name }} rot-tracker-webhook-windows-i386/
