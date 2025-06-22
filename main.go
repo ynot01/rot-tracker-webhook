@@ -62,7 +62,7 @@ func main() {
 			} else {
 				ipAddr = fmt.Sprintf("%v:%v", ipAddr[:findPort], portInt+1) // Add 1 to server port to get the a2s query port
 			}
-			client, weHaveClient := udpClients[ipAddr]
+			client, weHaveClient := udpClients[dictKey]
 			if !weHaveClient {
 				newClient, newClientErr := a2s.NewClient(
 					ipAddr,
@@ -73,7 +73,7 @@ func main() {
 					continue
 				}
 				client = newClient
-				udpClients[ipAddr] = newClient
+				udpClients[dictKey] = newClient
 			}
 			info, infoErr := client.QueryInfo()
 			if infoErr != nil {
