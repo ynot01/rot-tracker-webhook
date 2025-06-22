@@ -83,10 +83,10 @@ func main() {
 			} else {
 				// fmt.Printf("%v \"success\"\n", ipAddr)
 			}
-			region := strings.ToUpper(get_region_from_keywords(info.ExtendedServerInfo.Keywords))
 			// Servers are stored by server port, not query port!
 			oldServerName, serverIsRegistered := registeredServers[dictKey]
 			if serverIsRegistered && oldServerName != info.Name { // If the name changed, report it to Discord
+				region := strings.ToUpper(get_region_from_keywords(info.ExtendedServerInfo.Keywords))
 				send_message_to_discord(dictKey, region, oldServerName, info.Name)
 			}
 			registeredServers[dictKey] = info.Name
