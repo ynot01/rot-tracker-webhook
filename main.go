@@ -17,10 +17,17 @@ const WEBHOOK_USERNAME = "RotTracker"
 const WEBHOOK_AVATAR_URL = "https://cdn.fastly.steamstatic.com/steamcommunity/public/images/apps/2773280/b1eeb415c1b44677b667de93549594d313e78a8b.jpg"
 const MASTER_URL = "https://content.aneurismiv.com/masterlist"
 
+// udpClients["0.0.0.0:7777"] = *a2s.Client
 var udpClients map[string]*a2s.Client = make(map[string]*a2s.Client)
+
+// udpClients["0.0.0.0:7777"] = "SIGNAL 13 1 2025 CLUSTER"
 var registeredServers map[string]string = make(map[string]string)
+
+// https://discord.com/api/webhooks/<webhook id>/<webhook token>
 var myWebhookURL string
 
+// Loops through all official servers and queries them one by one
+// If any change in name, consider them rotted and post to Discord
 func main() {
 	fmt.Printf("[%v] Started rot-tracker-webhook.\n", time.Now().Format(time.RFC850))
 	content, fileErr := os.ReadFile("webhook.txt")
@@ -94,6 +101,7 @@ func main() {
 	}
 }
 
+// Download updated official server list and split by newline
 func get_masterlist() []string {
 	resp, masterErr := http.Get(MASTER_URL)
 	if masterErr != nil {
@@ -108,6 +116,7 @@ func get_masterlist() []string {
 	return strings.Split(string(resBody), "\n")
 }
 
+// Http POST request to Discord webhook
 func send_message_to_discord(ipAddr string, region string, oldServerName string, newServerName string) {
 	jsonBody := fmt.Appendf(nil, `{
   "embeds": [
@@ -149,6 +158,10 @@ func send_message_to_discord(ipAddr string, region string, oldServerName string,
 	}
 }
 
+// String operations to isolate region
+// region:us,uptime:0,protected:1,rot:0.06 = us
+// region:au,uptime:30,protected:1,rot:0.05 = au
+// region:cn,uptime:30,protected:1,rot:0.06 = cn
 func get_region_from_keywords(keywords string) string {
 	returnValue := "Unknown Region"
 	keywordStrings := strings.Split(strings.TrimSpace(keywords), ",")
