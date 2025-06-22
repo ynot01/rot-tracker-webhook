@@ -37,6 +37,9 @@ func main() {
 		official_servers := get_masterlist()
 		for official := range official_servers {
 			ipAddr := official_servers[official]
+			if strings.TrimSpace(ipAddr) == "" {
+				continue
+			}
 			findComment := strings.Index(ipAddr, "//") // Strip comments from masterlist
 			if findComment != -1 {
 				ipAddr = strings.TrimSpace(ipAddr[:findComment])
