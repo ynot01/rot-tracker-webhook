@@ -8,6 +8,8 @@ It does this by querying each official server with Steam a2s queries, storing th
 
 ## Usage
 
+Downloads below (Click the checkmark that matches your OS and architecture)
+
 |         | AMD64    | i386     | ARM64    | ARM32    |
 | :---:   | :---:    | :---:    | :---:    | :---:    |
 | Windows | [✅](https://github.com/ynot01/rot-tracker-webhook/releases/latest/download/rot-tracker-webhook-windows-amd64.zip) | [✅](https://github.com/ynot01/rot-tracker-webhook/releases/latest/download/rot-tracker-webhook-windows-i386.zip) | [✅](https://github.com/ynot01/rot-tracker-webhook/releases/latest/download/rot-tracker-webhook-windows-arm64.zip) | [✅](https://github.com/ynot01/rot-tracker-webhook/releases/latest/download/rot-tracker-webhook-windows-arm32.zip) |
