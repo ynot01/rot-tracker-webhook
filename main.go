@@ -13,8 +13,6 @@ import (
 	"github.com/rumblefrog/go-a2s"
 )
 
-const WEBHOOK_USERNAME = "RotTracker"
-const WEBHOOK_AVATAR_URL = "https://cdn.fastly.steamstatic.com/steamcommunity/public/images/apps/2773280/b1eeb415c1b44677b667de93549594d313e78a8b.jpg"
 const MASTER_URL = "https://content.aneurismiv.com/masterlist"
 
 // udpClients["0.0.0.0:7777"] = *a2s.Client
@@ -150,10 +148,8 @@ func send_message_to_discord(ipAddr string, region string, oldServerName string,
       }
     }
   ],
-  "components": [],
-  "username": "%v",
-  "avatar_url": "%v"
-}`, region, oldServerName, newServerName, playerCount, ipAddr, WEBHOOK_USERNAME, WEBHOOK_AVATAR_URL)
+  "components": []
+}`, region, oldServerName, newServerName, playerCount, ipAddr)
 	bodyReader := bytes.NewReader(jsonBody)
 	resp, err := http.Post(myWebhookURL, "application/json", bodyReader)
 	if err != nil {
