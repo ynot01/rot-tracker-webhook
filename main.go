@@ -20,6 +20,9 @@ const MASTER_URL = "https://content.aneurismiv.com/masterlist"
 // udpClients["0.0.0.0:7777"] = *a2s.Client
 var udpClients map[string]*a2s.Client = make(map[string]*a2s.Client)
 
+// udpClients["0.0.0.0:7777"] = "54/60"
+var playerCounts map[string]string = make(map[string]string)
+
 // udpClients["0.0.0.0:7777"] = "SIGNAL 13 1 2025 CLUSTER"
 var registeredServers map[string]string = make(map[string]string)
 
@@ -94,8 +97,9 @@ func main() {
 			oldServerName, serverIsRegistered := registeredServers[dictKey]
 			if serverIsRegistered && oldServerName != info.Name { // If the name changed, report it to Discord
 				region := strings.ToUpper(get_region_from_keywords(info.ExtendedServerInfo.Keywords))
-				send_message_to_discord(dictKey, region, oldServerName, info.Name)
+				send_message_to_discord(dictKey, region, oldServerName, info.Name, playerCounts[dictKey])
 			}
+			playerCounts[dictKey] = fmt.Sprintf("%v/%v", info.Players, info.MaxPlayers)
 			registeredServers[dictKey] = info.Name
 		}
 	}
@@ -117,7 +121,7 @@ func get_masterlist() []string {
 }
 
 // Http POST request to Discord webhook
-func send_message_to_discord(ipAddr string, region string, oldServerName string, newServerName string) {
+func send_message_to_discord(ipAddr string, region string, oldServerName string, newServerName string, playerCount string) {
 	jsonBody := fmt.Appendf(nil, `{
   "embeds": [
     {
@@ -135,6 +139,10 @@ func send_message_to_discord(ipAddr string, region string, oldServerName string,
         {
           "name": "New name",
           "value": "%v"
+        },
+        {
+          "name": "Last recorded playercount",
+          "value": "%v"
         }
       ],
       "footer": {
@@ -145,7 +153,7 @@ func send_message_to_discord(ipAddr string, region string, oldServerName string,
   "components": [],
   "username": "%v",
   "avatar_url": "%v"
-}`, region, oldServerName, newServerName, ipAddr, WEBHOOK_USERNAME, WEBHOOK_AVATAR_URL)
+}`, region, oldServerName, newServerName, playerCount, ipAddr, WEBHOOK_USERNAME, WEBHOOK_AVATAR_URL)
 	bodyReader := bytes.NewReader(jsonBody)
 	resp, err := http.Post(myWebhookURL, "application/json", bodyReader)
 	if err != nil {
