@@ -163,15 +163,27 @@ func send_message_to_discord(ipAddr string, region string, oldServerName string,
 // region:au,uptime:30,protected:1,rot:0.05 = au
 // region:cn,uptime:30,protected:1,rot:0.06 = cn
 func get_region_from_keywords(keywords string) string {
-	returnValue := "Unknown Region"
+	stringRegion := "Unknown Region"
 	keywordStrings := strings.Split(strings.TrimSpace(keywords), ",")
 	for n := range keywordStrings {
 		keyAndValue := strings.Split(keywordStrings[n], ":")
 		key := keyAndValue[0]
 		value := keyAndValue[1]
 		if key == "region" {
-			returnValue = value
+			stringRegion = value
 		}
 	}
-	return returnValue
+	switch strings.ToUpper(stringRegion) {
+	case "US":
+		return "🇺🇸"
+	case "AU":
+		return "🇦🇺"
+	case "CN":
+		return "🇨🇳"
+	case "RU":
+		return "🇷🇺"
+	case "EUROPEANUNION":
+		return "🇪🇺"
+	}
+	return stringRegion
 }
