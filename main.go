@@ -95,9 +95,15 @@ func main() {
 			oldServerName, serverIsRegistered := registeredServers[dictKey]
 			if serverIsRegistered && oldServerName != info.Name { // If the name changed, report it to Discord
 				region := strings.ToUpper(get_region_from_keywords(info.ExtendedServerInfo.Keywords))
-				send_message_to_discord(dictKey, region, oldServerName, info.Name, playerCounts[dictKey])
+				plyCount, havesPlyCnt := playerCounts[dictKey]
+				if !havesPlyCnt {
+					plyCount = "Unknown"
+				}
+				send_message_to_discord(dictKey, region, oldServerName, info.Name, plyCount)
 			}
-			playerCounts[dictKey] = fmt.Sprintf("%v/%v", info.Players, info.MaxPlayers)
+			if info.Players > 0 {
+				playerCounts[dictKey] = fmt.Sprintf("%v/%v", info.Players, info.MaxPlayers)
+			}
 			registeredServers[dictKey] = info.Name
 		}
 	}
