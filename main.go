@@ -104,6 +104,9 @@ func main() {
 			if info.Players > 0 {
 				playerCounts[dictKey] = fmt.Sprintf("%v/%v", info.Players, info.MaxPlayers)
 			}
+			if !serverIsRegistered {
+				fmt.Printf("[%v] New server added to register: %v - %v\n", time.Now().Format(time.RFC850), dictKey, info.Name)
+			}
 			registeredServers[dictKey] = info.Name
 		}
 	}
