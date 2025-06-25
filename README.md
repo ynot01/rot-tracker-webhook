@@ -19,7 +19,7 @@ Replace the text in webhook.txt with your webhook URL
 
 Operational abnormalities will be reported to STDOUT, but the program will continue running if it can
 
-Tip: Running `nohup ./rot-tracker-webhook.x86_64 > ./rot.log 2>&1 &` on **Linux** will run the program as a background process and output logs to ./rot.log
+Tip: Running `setsid ./rot-tracker-webhook.x86_64 > ./rot.log 2>&1 < /dev/null &` on **Linux** will run the program as a background process and output logs to ./rot.log
 
 ## Building
 
